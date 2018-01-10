@@ -1,0 +1,120 @@
+---
+name: small_orfs_to_jbrowse
+description: Super-resolution ribosome profiling reveals unannotated translation events in Arabidopsis
+version: 0.1
+tags:
+    - 'translation'
+    - 'ribosome'
+    - 'footprint'
+    - 'Ribo-seq'
+    - 'ncRNA'
+    - 'sORF'
+
+authors:
+    - name: Vivek Krishnakumar
+      email: vkrishna@jcvi.org
+      sponsor_organization: J. Craig Venter Institute
+      sponsor_uri: http://www.jcvi.org
+
+type: generic
+main_module: main.py
+url: http://www.pnas.org/content/113/45/E7126.full
+validate_request: true
+whitelist:
+  - www.araport.org
+  - api.araport.org
+requirements:
+  - gffutils
+
+endpoints:
+  /search:
+    description: Parse GFF, extract small ORF loci from input chromosome range and convert to JBrowse compatible JSON
+    summary: Mimics the JBrowse /features REST endpoint
+    parameters:
+      - name: q
+        description: JBrowse REST API endpoint
+        type: string
+        required: true
+        enum:
+          - 'features'
+          - 'globalStats'
+          - 'regionStats'
+          - 'regionFeatureDensities'
+        default: 'features'
+      - name: chr
+        description: Chromosome
+        type: string
+        required: true
+        default: 'Chr1'
+        pattern: '^Chr[1-5CM]$'
+      - name: start
+        description: Start
+        type: integer
+        format: int64
+        required: true
+        default: 3544000
+      - name: end
+        description: End
+        type: integer
+        format: int64
+        required: true
+        default: 3750100
+        minimum: 1
+      - name: strand
+        description: Strand
+        type: string
+        enum:
+          - null
+          - '+'
+          - '-'
+          - '.'
+      - name: featuretype
+        description: Parent GFF featuretype
+        type: string
+        default: 'gene'
+      - name: level
+        description: Depth of child feature(s)
+        type: integer
+        format: int32
+        minumum: 0
+        maximum: 2
+        default: 2
+      - name: completely_within
+        description: Return features that partially or completely overlap region
+        type: boolean
+      - name: interbase
+        description: Return coordinates in either interbase or 1-based format
+        type: boolean
+        default: true
+      - name: scale
+        description: Scale
+        type: number
+        format: double
+        default: 0.0
+      - name: basesPerSpan
+        description: Bases Per Span
+        type: number
+        format: double
+        default: 0.0
+
+  /list:
+    description: Chromosome information or JBrowse trackList.json config
+    summary: Returns a list of A. thaliana chromosome identifiers and length or JBrowse trackList.json configs
+    parameters:
+      - name: q
+        type: string
+        required: true
+        enum:
+          - 'makeTrackListJson'
+          - 'listChromosomes'
+        default: 'makeTrackListJson'
+
+sources:
+  - title: Super-resolution ribosome profiling reveals unannotated translation events in Arabidopsis
+    description: "Super-resolution ribosome profiling reveals unannotated translation events in Arabidopsis. Published in PNAS (2016) DOI: 10.1073/pnas.1614788113"
+    language: en-us
+    sponsor_organization_name: Benfey Lab at Duke University
+    sponsor_uri: https://sites.duke.edu/benfey/
+    provider_name: Polly Hsu
+    provider_email: pollyhsu@msu.edu
+    uri: http://www.pnas.org/content/113/45/E7126.full
