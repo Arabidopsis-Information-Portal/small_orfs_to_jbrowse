@@ -2,6 +2,7 @@
 name: small_orfs_to_jbrowse
 description: Super-resolution ribosome profiling reveals unannotated translation events in Arabidopsis
 version: 0.1
+icon: logo.png
 tags:
     - 'translation'
     - 'ribosome'

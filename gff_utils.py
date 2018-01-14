@@ -46,7 +46,9 @@ def parse_gff(chrom, start, end, strand, featuretype, level, completely_within, 
             'strand' : _strand,
             'uniqueID' : parent.id,
             'name' : parent.attributes.get('Name', [parent.id])[0],
-            'description' : parent.attributes.get('Note', None)[0],
+            'description' : parent.attributes.get('Note', [None])[0],
+            'peptide_sequence': parent.attributes.get('peptide_sequence', [None])[0],
+            'expressed_in': parent.attributes.get('expressed_in', [None])[0],
             'type' : featuretype,
             'score' : parent.score if (isinstance(parent.score, (int, float))) else 0,
         }
@@ -84,7 +86,8 @@ def generate_config(api_url):
 
     config_template = {
         "style" : {
-            "color" : "plum"
+            "color" : "plum",
+            "description" : "function( fObj, varName, gObj, tObj ) { return 'Expressed in ' + fObj.get('expressed_in'); }"
         },
         "key" : "Translated small ORFs (Hsu et al. 2016)",
         "storeClass" : "Araport/Store/SeqFeature/REST",
